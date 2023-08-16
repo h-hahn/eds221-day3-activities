@@ -1,0 +1,39 @@
+---
+title: "toolik_chem.qmd"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+library(dplyr)
+```
+
+## PART 2
+
+```{r}
+toolik_biochem <- read_csv(here("data", "2011_Kling_Akchem.csv"), na = ".") %>% 
+  clean_names()
+
+inlet_biochem <- toolik_biochem %>% 
+  select(site, p_h, doc_u_m, tdn_u_m) %>% filter(site == "Toolik Inlet" | site == "Toolik inlet")
+```
+
+```{r}
+# mean 1
+for (i in seq_along(inlet_biochem)) {
+  if (is.numeric(inlet_biochem[[i]]))
+  { inlet_mean <- mean(inlet_biochem[[i]], na.rm = TRUE) 
+  print(inlet_mean)
+  }}
+```
+
+```{r}
+# mean 2
+inlet_mean2 <- inlet_biochem %>% 
+  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+
+inlet_mean2
+```
